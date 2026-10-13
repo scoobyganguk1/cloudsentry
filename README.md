@@ -11,9 +11,9 @@ CloudSentry checks Terraform `.tf` files for a focused set of common security fo
 ```console
 $ python -m cloudsentry scan examples/insecure --format json
 {
-  "summary": {"critical": 1, "high": 2, "medium": 1, "low": 0, "total": 4},
+  "summary": {"critical": 1, "high": 2, "medium": 2, "low": 0, "total": 5},
   "findings": [
-    {"rule_id": "CS-AWS-001", "severity": "CRITICAL", "file": "main.tf", "line": 14,
+    {"rule_id": "CS-AWS-001", "severity": "CRITICAL", "file": "main.tf", "line": 6,
      "title": "S3 bucket allows public access", "resource": "aws_s3_bucket.public_assets"}
   ]
 }
