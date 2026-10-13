@@ -1,0 +1,31 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m unittest discover -s tests -v
+      - name: Verify the vulnerable fixture is detected
+        shell: bash
+        run: |
+          set +e
+          python -m cloudsentry scan examples/insecure --format json
+          status=$?
+          set -e
+          if [ "$status" -ne 1 ]; then
+            echo "Expected findings exit code 1, got $status"
+            exit 1
+          fi
+
